@@ -27,7 +27,7 @@ export class SearchAllReqDto extends SearchReqDto {
       '캐릭터 정보 조회를 통해 전달 받은 캐릭터 고유 식별 코드 (캐릭터 선택이 있는 경우 사용)',
   })
   @ApiPropertyOptional()
-  selectedCid?: string;
+  characterId?: string;
 }
 
 export class CategoryReqDto extends SearchAllReqDto {
@@ -116,21 +116,51 @@ export class MintDataDto {
   tokenId?: string;
 }
 
-export class MintReqDto extends SearchAllReqDto {
+export class MintReqDto /*extends SearchAllReqDto*/ {
   @ApiProperty({
+    example: 'requestid',
     description:
-      '민팅 정보 (항상 배열로 전달되며, 조합민팅의 경우 2개 이상이 전달됨)',
-    type: [MintDataDto],
+        '캐릭터 정보 조회를 통해 전달 받은 캐릭터 고유 식별 코드 (캐릭터 선택이 있는 경우 사용)',
   })
-  items: MintDataDto[];
+  @ApiPropertyOptional()
+  requestId: string;
+
+  @ApiProperty({
+    example: 'characterId',
+    description:
+        '캐릭터 정보 조회를 통해 전달 받은 캐릭터 고유 식별 코드 (캐릭터 선택이 있는 경우 사용)',
+  })
+  @ApiPropertyOptional()
+  characterId?: string;
+
+  // @ApiProperty({
+  //   description:
+  //     '민팅 정보 (항상 배열로 전달되며, 조합민팅의 경우 2개 이상이 전달됨)',
+  //   type: MintDataDto,
+  // })
+  // items: MintDataDto;
+  @ApiProperty({
+    example: 'NFT TokenId',
+    description: 'NFT ID',
+  })
+  @ApiPropertyOptional()
+  tokenId: string;
 }
 
-export class MintFinishedReqDto extends SearchAllReqDto {
+export class MintFinishedReqDto /*extends SearchAllReqDto*/ {
   @ApiProperty({
     example: 'success',
     description: 'tx result {success, failure}',
   })
   result: string;
+
+  @ApiProperty({
+    example: 'characterId',
+    description:
+        '캐릭터 정보 조회를 통해 전달 받은 캐릭터 고유 식별 코드 (캐릭터 선택이 있는 경우 사용)',
+  })
+  @ApiPropertyOptional()
+  characterId?: string;
 
   @ApiProperty({
     example: 'mint',
@@ -141,17 +171,24 @@ export class MintFinishedReqDto extends SearchAllReqDto {
   @ApiProperty({
     description:
       '민팅 정보 (항상 배열로 전달되며, 조합민팅의 경우 2개 이상이 전달됨)',
-    type: [MintDataDto],
+    type: Object,
   })
-  items: MintDataDto[];
+  requestedData: any;
 }
 
-export class GameGoodsReqDto extends SearchAllReqDto {
+export class GameGoodsReqDto /*extends SearchAllReqDto*/ {
+  @ApiProperty({ example: 'asdf-asdfad-asdfadsf-asdfadsf', description: 'Request ID' })
+  requestId: string;
+
+  @ApiProperty({ example: 'com', description: '캐릭터 ID' })
+  characterId: string;
+
   @ApiProperty({ example: 'goldCode', description: '재화 고유 식별 코드' })
   goodsCode: string;
 
-  @ApiProperty({ example: 'gold', description: '재화 명' })
-  goodsName: string;
+  // todo: 재화명 필요? -> 필수는 아닐것 같습니다. 다만 로그를 남기거나 했을때 코드만으로는 추가적으로 조회가 필요한데 반해 재화명이 함께 있으면 확인이 용이 할것같네요
+  // @ApiProperty({ example: 'gold', description: '재화 명' })
+  // goodsName: string;
 
   @ApiProperty({ example: 100, description: '재화 수량' })
   amount: number;

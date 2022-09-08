@@ -6,28 +6,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { getLogFormat, logLevel } from './logger/winston.config';
 import { WINSTON_MODULE_NEST_PROVIDER, WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
-// import {winstonLogger} from "./logger/logger.module";
-/*
-  todo:
-    + Config
-    + DB Connection
-    + Blockchain Connection
-    + Versioning
-    + Swagger
-    + Logger // log rotate
-    Security (auth)
-    Exception
-    Error
-    File
-    Filter
-    Transform pipe
-    validation pipe / class validation
-    http client
-    distributed tracing (OpenTracing, Jaeger)
-    rate limiting (@nestjs/throttler )
-    Request context
-    gRPC
- */
+
 async function bootstrap() {
   const appOptions = {
     cors: true,
@@ -49,13 +28,10 @@ async function bootstrap() {
 
   app.enableVersioning({
     type: VersioningType.URI,
-    //fixme: default 설정으로 모든 contoller 버전 컨트롤
-    // defaultVersion: [VERSION_NEUTRAL],
-    // defaultVersion: '2',
   });
 
   const swaggerOptions = new DocumentBuilder()
-    .setTitle('Standard Project')
+    .setTitle(configService.get('SWAGGER_TITLE'))
     .setDescription('Blockchain API description')
     .setVersion('1.0')
     // .addTag('blockchain')
